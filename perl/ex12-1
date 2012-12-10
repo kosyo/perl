@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+use strict;
+
+sub attrib {
+	my @attribs;
+	my $file = shift @_;	
+	if (-r $file) {
+		print "r";
+		push(@attribs, "readable");
+	}
+	if (-w $file) {
+		push(@attribs, "writable");
+	}
+	if (-x $file) {
+		push(@attribs, "executable");
+	}
+	
+	@attribs;
+}	
+
+foreach my $file ($ARGV) {
+	my @attribs = &attrib($file);
+	print @attribs;
+}	

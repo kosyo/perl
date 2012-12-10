@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+use strict;
+my $ch = <STDIN>;
+while($ch ne "q\n") {
+	if ($ch=~/fred/ || $ch=~/wilma/) {
+		print $ch;
+	}
+		$ch=<STDIN>;	
+}

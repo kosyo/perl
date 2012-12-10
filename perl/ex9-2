@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+use strict;
+
+my $out;
+if(!open $out, '>', 'out'){
+	die "Can't write file: $!";
+}
+while(<>) {
+s/fred/wilma/g;
+
+print $out $_;
+}

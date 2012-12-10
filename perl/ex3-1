@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+use strict;
+chomp(my $element = <STDIN>);
+my @arr = ();
+while($element ne "q") {
+	push(@arr, $element);
+	chomp($element = <STDIN>);
+}
+print reverse @arr;

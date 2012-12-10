@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+use strict;
+
+chomp(my $pattern=<STDIN>);
+
+my $input=<STDIN>;
+while($input ne "q\n") {
+	if($input=~/$pattern/) {
+		print $input;
+	}
+	$input=<STDIN>;
+}

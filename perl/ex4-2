@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+use strict;
+sub above_average {
+	my $avg;
+	my $i;
+	while(@_) {
+		$avg += pop(@_);
+		$i++;
+	}
+		$avg/$i;
+}
+my @nums;
+chomp(my $num=<STDIN>);
+while($num ne "q" ){
+	push(@nums, $num);
+	chomp($num=<STDIN>);
+}
+
+print above_average(@nums);

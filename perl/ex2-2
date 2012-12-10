@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+use strict;
+print "Please input number: ";
+my $x=<STDIN>;
+print "Please input stepen: ";
+my $y=<STDIN>;
+$y--;
+my $z=$x;
+while($y){
+	$y--;
+	$z*=$x;
+}
+print $z."\n";
+

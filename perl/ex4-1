@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+use strict;
+
+sub mytotal{
+	my $i;
+	while(defined(pop @_)) {
+		$i++;
+	}
+	$i;
+}
+my @arr = qw ?bla nezs hj?;
+my $elements = mytotal (@arr);
+print $elements . "\n";

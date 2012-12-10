@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+use strict;
+
+foreach($ARGV) {
+	if (-r) {
+		print $_;
+	}
+}

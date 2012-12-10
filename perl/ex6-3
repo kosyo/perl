@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+use strict;
+my ($entry_len, $longest);
+foreach my $entry (keys %ENV) {
+	$entry_len = length ($entry);
+	$longest = $entry_len if $entry_len>$longest;
+	printf("%-${longest}s %s\n", $entry, $ENV{$entry});
+}
+

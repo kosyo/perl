@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+use strict;
+my @lines = <STDIN>;
+
+foreach my $str (@lines) {
+	printf "%20s", $str;
+}

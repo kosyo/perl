@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+use strict;
+chmod($_=<STDIN>);
+if (/[Ff]red/) {
+	print $_;
+}
+ 

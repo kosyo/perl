@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+use strict;
+print "input string:";
+chomp(my $str=<STDIN>);
+
+print "input number:";
+my $x=<STDIN>;
+
+print $str x $x . "\n";

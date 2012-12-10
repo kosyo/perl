@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+use strict;
+
+chomp(my $input=<STDIN>);
+my $guessed=0;
+my $num = int(1+rand 100);
+
+
+while($input ne "quit" && $input ne "exit" && !$guessed) {
+	if($num == $input) {
+		$guessed=1;
+		print "Guessed!";
+	} elsif($num < $input) {
+		print "Too high\n";
+	} else {
+		print "Too low\n";
+	}
+	chomp($input=<STDIN>);
+}

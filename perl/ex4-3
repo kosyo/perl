@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use strict;
+use feature qw(state);
+sub greet {
+	state @names;
+	if(!@names){
+		print "hallo @_\n";
+	} else {
+		print "hallo @_.I have seen @names.\n";
+	}
+	push @names, @_;
+}
+
+greet (" Fred");
+greet ("wilma");
+greet("bam-bam");
+

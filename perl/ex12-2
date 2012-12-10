@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+use strict;
+
+my $oldest_file;
+my $time;
+foreach (@ARGV) {
+	($oldest_file, $time) = ($_, -M $_) if $time < -M $_;
+}
+
+print "Name: $oldest_file, Time: $time\n";

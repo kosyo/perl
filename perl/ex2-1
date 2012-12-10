@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+use strict;
+chomp(my $r=<STDIN>);
+while($r < 0) {
+print "$r is negative please input positive or 0 number!\n";
+$r=<STDIN>;
+}
+print 2*3.14*$r ."\n"

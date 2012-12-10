@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use strict;
+
+my @nums;
+chomp(my $number = <STDIN>);
+while($number ne "q") {
+	push(@nums, $number);
+	chomp($number = <STDIN>);
+}
+
+my @names = qw / fred betty barney dino wilma bebbles bamm-bamm/;
+
+foreach my $num (@nums) {
+print $names[$num] . " ";
+}
+print "\n";
+

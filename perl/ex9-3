@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+use strict;
+
+my %files;
+foreach (@ARGV) {
+	$files{$_}=1;
+}
+
+while(<>) {
+	if(/\A#Cop/) {
+		delete $files{$ARGV};
+	}
+}
+@ARGV=sort keys %files;
+$^I=".bak";
+while(<>){
+	if(/\A#!/) {
+		$_.="#Copyright\n";
+	}
+	print;
+}

@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+use strict;
+
+my @arr;
+chomp(my $elements = <STDIN>);
+while ($elements ne "q" ) {
+	push(@arr, $elements);
+	chomp($elements= <STDIN>);
+}
+print sort @arr;
+print "\n";
