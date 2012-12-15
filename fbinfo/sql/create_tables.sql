@@ -1,9 +1,7 @@
-CREATE TABLE uids (id integer PRIMARY KEY SERIAL, uid integer)
-CREATE TABLE names (id integer PRIMARY KEY SERIAL, name varchar(255), uid integer FOREIGN KEY)
-CREATE TABLE birthdays (id integer PRIMARY KEY SERIAL, birthday varchar(255), uid integer FOREIGN KEY)
-CREATE TABLE usernames (id integer PRIMARY KEY SERIAL, username varchar(255), uid integer FOREIGN KEY)
-CREATE TABLE genders (id integer PRIMARY KEY SERIAL, gender varchar(255), uid integer FOREIGN KEY)
-CREATE TABLE locales (id integer PRIMARY KEY SERIAL, locale varchar(255), uid integer FOREIGN KEY)
-CREATE TABLE addresses ( id integer PRIMARY KEY SERIAL, address varchar(255), uid integer FOREIGN KEY)
-
-
+CREATE TABLE fuids (id SERIAL PRIMARY KEY, fuid varchar(255))
+CREATE TABLE names (id SERIAL, name varchar(255), uid integer references fuids(id))
+CREATE TABLE birthdays (id SERIAL, birthday varchar(255), uid integer references fuids(id))
+CREATE TABLE usernames (id SERIAL, username varchar(255), uid integer references fuids(id))
+CREATE TABLE genders (id SERIAL, gender varchar(255), uid integer references fuids(id))
+CREATE TABLE locales (id SERIAL, locale varchar(255), uid integer references fuids(id))
+CREATE TABLE addresses ( id SERIAL, address varchar(255), uid integer references fuids(id))
