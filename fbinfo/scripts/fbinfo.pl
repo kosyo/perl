@@ -7,7 +7,7 @@ use Net::Facebook::Oauth2;
 
 my $app_secret = '4b8b3ced7f75401c4f4d7274546fcc2e';
 my $app_id = '304631152969790';
-my $call_back = 'http://localhost/perl/fbinfo/scripts/fbinfo_callback.pl';
+my $call_back = 'http://77.85.27.24/perl/fbinfo/scripts/fbinfo_callback.pl';
 
 my $fb = Net::Facebook::Oauth2->new(
 	application_id => $app_id, 
