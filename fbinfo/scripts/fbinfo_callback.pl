@@ -9,26 +9,6 @@ use Net::Facebook::Oauth2;
 use Data::Dumper;
 my $q = CGI->new;
 print $q->header();
-sub acctoken_session {
-	(my $acctoken) = @_;
-	my $sid = $q->cookie('acctok2') || $q->param('acctok2') || undef;
-	my $session = new CGI::Session("driver:File", $sid, {Directory=>'/tmp'});
-	if (!$sid) {
-		my $cookie = $q->cookie('acctok2' => $session->id);
-		print $q->header( -cookie => $cookie );
-	}
-
-	if ($session->param("acctoken")) {
-		return $_;
-	} else {
-		$session->param("acctoken", $acctoken);
-	}
-	$session->param("acctoken");
-}
-
-sub have_acctoken_session {
-	$q->cookie('acctok2') || $q->param('acctok2') || undef;
-}
 
 sub fb_get_info {
 	my $app_secret = '4b8b3ced7f75401c4f4d7274546fcc2e';
@@ -36,29 +16,20 @@ sub fb_get_info {
 	my $call_back = 'http://77.85.27.24/perl/fbinfo/scripts/fbinfo_callback.pl';
 
 	my $fb = Net::Facebook::Oauth2->new(
-        	application_id => $app_id,
+		application_id => $app_id,
    		application_secret => $app_secret,
         	callback => $call_back
 	);
-	my $access_token;
 	
-	if (have_acctoken_session()) {
-#		print "ima";
-		$access_token = acctoken_session();
-	} else {
-#		print "nqma";
-		$access_token = $fb->get_access_token(code => $q->param('code'));
-		acctoken_session($access_token);
-	}
-#	print $access_token;
-
+	my $access_token = $fb->get_access_token(code => $q->param('code'));
+	
 	$fb = Net::Facebook::Oauth2->new(
         	access_token => $access_token
 	);
 	my $info = $fb->get(
-        	'https://graph.facebook.com/me' ##Facebook API URL
+        	'https://graph.facebook.com/me'
 	);
-	$info->as_hash->{"@_"};
+	$info->as_hash;
 }
 																										
 sub db_connect {
@@ -76,14 +47,59 @@ sub exec_sql_file {
 #exec_sql_file("../sql/create_tables.sql");
 
 my $dbc = db_connect();
-my $fuid =  fb_get_info('id');
-print $fuid . ":ds";
+my $fb_info = fb_get_info();
+my $fuid =  $fb_info->{id};
 my $db_fuid = $dbc->prepare("SELECT fuid FROM fuids WHERE fuids.fuid = '" . $fuid . "'");
 $db_fuid->execute();
-print Dumper $db_fuid;
-if (!$db_fuid->fetch()) {
-	print "true";
+my $saved_user=$db_fuid->fetch();
+my $db_id;
+
+if (!$saved_user) {
 	$dbc->prepare("INSERT INTO fuids (fuid) VALUES (" . $fuid . ")")->execute();
+	$db_id = $dbc->prepare("SELECT id FROM fuids WHERE fuids.fuid = '" . $fuid . "'");
+        $db_id->execute();	
+	$db_id = $db_id->fetchrow_hashref()->{'id'};
+
+	$dbc->prepare("INSERT INTO names (name, uid) VALUES ('" . $fb_info->{'name'} . "', " . $db_id . ")")->execute();
+	$dbc->prepare("INSERT INTO genders (gender, uid) VALUES ('" . $fb_info->{'gender'} . "', " . $db_id . ")")->execute();
+	$dbc->prepare("INSERT INTO locales (locale, uid) VALUES ('" . $fb_info->{'locale'} . "', " . $db_id . ")")->execute();
+	$dbc->prepare("INSERT INTO usernames (username, uid) VALUES ('" . $fb_info->{'username'} . "', " . $db_id . ")")->execute();
 }
+my $db_info = $dbc->prepare("SELECT * FROM fuids, names, genders, addresses, birthdays, locales, usernames WHERE fuids.fuid = '" . $fuid . "'");
+$db_info->execute();
+$db_info = $db_info->fetchrow_hashref();
 $db_fuid->finish();
 $dbc->disconnect();
+if (!$saved_user) {
+print '
+<HTML>
+<HEAD>
+<TITLE>Fbinfo app</TITLE>
+</HEAD>
+<BODY>
+<FORM name = "info_form method = "post" action = "get_form_data.pl">
+<INPUT type = "hidden" name = "uid" value="' . $db_id . '"> 
+Address:
+<INPUT type = "text" name = "address">
+<BR>
+Birthday:
+<INPUT type = "text" name = "birthday">
+<INPUT type = "submit" name ="subbtn" value="Submit">
+</FORM>
+</BODY>
+</HTML>
+';
+} else {
+print '
+<HTML>
+<HEAD>
+<TITLE>Fbinfo app</TITLE>
+</HEAD>
+<BODY>
+Your info is: <BR>' . 
+"Name: " . $db_info->{'name'} . "<BR>Locale: " . $db_info->{'locale'} . "<BR>Address: " . $db_info->{'address'} . "<BR>Birthday: " . $db_info->{'birthday'} . "<BR>ID: " . $db_info->{'fuid'} . "<BR>Gender: " . $db_info->{'gender'} . "<BR>Username: " . $db_info->{'username'} . '</BODY>
+</HTML>
+';
+}
+
+
