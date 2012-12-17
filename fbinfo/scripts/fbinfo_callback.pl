@@ -59,13 +59,18 @@ if (!$saved_user) {
 	$db_id = $dbc->prepare("SELECT id FROM fuids WHERE fuids.fuid = '" . $fuid . "'");
         $db_id->execute();	
 	$db_id = $db_id->fetchrow_hashref()->{'id'};
-
+	print $db_id;
 	$dbc->prepare("INSERT INTO names (name, uid) VALUES ('" . $fb_info->{'name'} . "', " . $db_id . ")")->execute();
 	$dbc->prepare("INSERT INTO genders (gender, uid) VALUES ('" . $fb_info->{'gender'} . "', " . $db_id . ")")->execute();
 	$dbc->prepare("INSERT INTO locales (locale, uid) VALUES ('" . $fb_info->{'locale'} . "', " . $db_id . ")")->execute();
 	$dbc->prepare("INSERT INTO usernames (username, uid) VALUES ('" . $fb_info->{'username'} . "', " . $db_id . ")")->execute();
+} else {
+	$db_id = $dbc->prepare("SELECT id FROM fuids WHERE fuids.fuid = '" . $fuid . "'");
+	$db_id->execute();
+	$db_id = $db_id->fetchrow_hashref()->{'id'};
 }
-my $db_info = $dbc->prepare("SELECT * FROM fuids, names, genders, addresses, birthdays, locales, usernames WHERE fuids.fuid = '" . $fuid . "'");
+
+my $db_info = $dbc->prepare("SELECT name, fuid, birthday, locale, address, gender, username FROM fuids, names, birthdays, locales, addresses, genders, usernames WHERE fuids.id = names.uid AND fuids.id = birthdays.uid AND fuids.id = locales.uid AND fuids.id = addresses.uid AND fuids.id = genders.uid AND fuids.id = usernames.uid AND fuids.id = $db_id");
 $db_info->execute();
 $db_info = $db_info->fetchrow_hashref();
 $db_fuid->finish();
