@@ -1,0 +1,16 @@
+<HTML>
+	<HEAD>
+		<TITLE>Fbinfo app</TITLE>
+	</HEAD>
+	<BODY>
+		<FORM name = "info_form method = "post" action = "get_form_data.pl">
+			<INPUT type = "hidden" name = "uid" value="<TMPL_VAR NAME=$db_id>"> 
+			Address:
+			<INPUT type = "text" name = "address">
+			<BR>
+			Birthday:
+			<INPUT type = "text" name = "birthday">
+			<INPUT type = "submit" name ="subbtn" value="Submit">
+		</FORM>
+	</BODY>
+</HTML>
