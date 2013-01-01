@@ -1,7 +1,1 @@
-CREATE TABLE fuids (id SERIAL PRIMARY KEY, fuid varchar(255))
-CREATE TABLE names (id SERIAL PRIMARY KEY, name varchar(255), uid integer references fuids(id))
-CREATE TABLE birthdays (id SERIAL PRIMARY KEY, birthday varchar(255), uid integer references fuids(id))
-CREATE TABLE usernames (id SERIAL PRIMARY KEY, username varchar(255), uid integer references fuids(id))
-CREATE TABLE genders (id SERIAL PRIMARY KEY, gender varchar(255), uid integer references fuids(id))
-CREATE TABLE locales (id SERIAL PRIMARY KEY, locale varchar(255), uid integer references fuids(id))
-CREATE TABLE addresses ( id SERIAL PRIMARY KEY, address varchar(255), uid integer references fuids(id))
+CREATE TABLE fb_users (id SERIAL PRIMARY KEY, fbuid text, name text, birthday text, username text, gender text, locale text, address text)
