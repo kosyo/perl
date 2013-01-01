@@ -2,5 +2,5 @@
 
 use FbInfoApp;
 
-FbInfoApp::FacebookAuth();
+FbInfoApp::Start();
 
